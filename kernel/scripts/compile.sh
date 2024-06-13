@@ -4,7 +4,7 @@
 # Fetch and build the kernel
 ###############################################################
 # Example usage:
-# ./compile.sh -v 6.9.4 -b ../build \
+# ./compile.sh -v 6.9.4 \
 #   -c INFINIBAND=m \
 #   -c INFINIBAND_USER_MAD=m \
 #   -c INFINIBAND_USER_ACCESS=m \
@@ -41,16 +41,14 @@ usage() {
   echo "Usage: $0 [-v <kernel_version>] [-c <config_option>] [-b <build_dir>]"
   echo "  -v <kernel_version>   Specify the Linux kernel version to fetch and compile"
   echo "  -c <config_option>    Specify a custom kernel config option (can be used multiple times)"
-  echo "  -b <build_dir>        Specify the build directory (default: linux-<kernel_version>-build)"
   exit 1
 }
 
 # Parse command-line arguments
-while getopts ":v:c:b:" opt; do
+while getopts ":v:c:" opt; do
   case $opt in
     v) kernel_version="$OPTARG";;
     c) config_options+=("$OPTARG");;
-    b) build_dir="$OPTARG";;
     \?) echo "Invalid option: -$OPTARG" >&2; usage;;
     :) echo "Option -$OPTARG requires an argument." >&2; usage;;
   esac
@@ -62,19 +60,10 @@ if [ -z "$kernel_version" ]; then
   usage
 fi
 
-# Set default build directory if not provided
-if [ -z "$build_dir" ]; then
-  build_dir="linux-$kernel_version-build"
-fi
-build_dir=$(pwd)"/${build_dir}"
-
-# # Download the specified Linux kernel version
+# # # Download the specified Linux kernel version
 kernel_dir=$(pwd)"/linux-$kernel_version"
-wget https://cdn.kernel.org/pub/linux/kernel/v"${kernel_version%%.*}".x/linux-"$kernel_version".tar.xz
-tar xf linux-"$kernel_version".tar.xz
-
-# Create the build directory
-mkdir -p "$build_dir"
+# wget https://cdn.kernel.org/pub/linux/kernel/v"${kernel_version%%.*}".x/linux-"$kernel_version".tar.xz
+# tar xf linux-"$kernel_version".tar.xz
 
 # Copy the current running kernel's .config file
 cd "${kernel_dir}" || exit
@@ -86,10 +75,10 @@ for option in "${config_options[@]}"; do
 done
 
 # Set defaults for new config options
-make O="${build_dir}" olddefconfig
+make olddefconfig
 
 # Compile the Linux kernel
 # shellcheck disable=SC2046
-make O="${build_dir}" -j$(nproc)
+make -j$(nproc)
 
-echo "Linux kernel $kernel_version compiled and installed successfully in $build_dir."
+# echo "Linux kernel $kernel_version compiled and installed successfully in $build_dir."
