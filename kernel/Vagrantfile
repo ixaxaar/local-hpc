@@ -8,8 +8,8 @@ Vagrant.configure("2") do |config|
     rhel.vm.box = "generic/rhel8"
   end
 
-  config.vm.define "arch" do |manjaro|
-    manjaro.vm.box = "archlinux/archlinux"
+  config.vm.define "arch" do |arch|
+    arch.vm.box = "archlinux/archlinux"
   end
 
   # Mount the local directory
