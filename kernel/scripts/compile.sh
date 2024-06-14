@@ -62,8 +62,8 @@ fi
 
 # # # Download the specified Linux kernel version
 kernel_dir=$(pwd)"/linux-$kernel_version"
-# wget https://cdn.kernel.org/pub/linux/kernel/v"${kernel_version%%.*}".x/linux-"$kernel_version".tar.xz
-# tar xf linux-"$kernel_version".tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v"${kernel_version%%.*}".x/linux-"$kernel_version".tar.xz
+tar xf linux-"$kernel_version".tar.xz
 
 # Copy the current running kernel's .config file
 cd "${kernel_dir}" || exit
@@ -81,4 +81,5 @@ make olddefconfig
 # shellcheck disable=SC2046
 make -j$(nproc)
 
-# echo "Linux kernel $kernel_version compiled and installed successfully in $build_dir."
+echo "Linux kernel $kernel_version compiled and installed successfully."
+ls -lah vmlinux
