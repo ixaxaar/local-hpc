@@ -1,15 +1,39 @@
 Vagrant.configure("2") do |config|
   # Define the base box for each operating system
+
   config.vm.define "ubuntu" do |ubuntu|
-    ubuntu.vm.box = "ubuntu/focal64"
+    ubuntu.vm.box = "cloud-image/ubuntu-24.04"
+    ubuntu.vm.box_architecture = "amd64"
+  end
+
+  config.vm.define "ubuntu-arm" do |ubuntu|
+    ubuntu.vm.box = "cloud-image/ubuntu-24.04"
+    ubuntu.vm.box_architecture = "arm64"
   end
 
   config.vm.define "rhel" do |rhel|
-    rhel.vm.box = "generic/rhel8"
+    rhel.vm.box = "generic/rhel9"
+    rhel.vm.box_architecture = "amd64"
+  end
+
+  config.vm.define "rhel-arm" do |rhel|
+    rhel.vm.box = "generic-a64/rhel9"
+    rhel.vm.box_architecture = "arm64"
+  end
+
+  config.vm.define "rocky" do |rhel|
+    rhel.vm.box = "rockylinux/9"
+    rhel.vm.box_architecture = "amd64"
+  end
+
+  config.vm.define "rocky-arm" do |rhel|
+    rhel.vm.box = "rockylinux/9"
+    rhel.vm.box_architecture = "arm64"
   end
 
   config.vm.define "arch" do |arch|
     arch.vm.box = "archlinux/archlinux"
+    arch.vm.box_architecture = "amd64"
   end
 
   # Mount the local directory
