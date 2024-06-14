@@ -168,5 +168,6 @@ package/
 *.config
 linux-*/
 *.tgz
+*.xz
 *.tar.gz
 .vagrant/
