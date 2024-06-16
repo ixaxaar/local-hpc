@@ -43,6 +43,11 @@ Vagrant.configure("2") do |config|
     config.vm.box_version = "20240601.239419"
   end
 
+  config.vm.provider "virtualbox" do |v|
+      v.memory = 4096
+      v.cpus = 10
+  end
+
   # Mount the local directory
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
