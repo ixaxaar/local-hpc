@@ -60,7 +60,7 @@ if [ -z "$kernel_version" ]; then
   usage
 fi
 
-# # # Download the specified Linux kernel version
+# Download the specified Linux kernel version
 kernel_dir=$(pwd)"/linux-$kernel_version"
 wget https://cdn.kernel.org/pub/linux/kernel/v"${kernel_version%%.*}".x/linux-"$kernel_version".tar.xz
 tar xf linux-"$kernel_version".tar.xz
