@@ -1,53 +1,7 @@
+base_vagrantfile = '../../..Vagrantfile'
+load base_vagrantfile if File.exists?(base_vagrantfile)
+
 Vagrant.configure("2") do |config|
-  # Define the base box for each operating system
-
-  config.vm.define "ubuntu" do |config|
-    config.vm.box = "bento/ubuntu-24.04"
-    config.vm.box_architecture = "amd64"
-    config.vm.box_version = "202404.26.0"
-  end
-
-  config.vm.define "ubuntu-arm" do |config|
-    config.vm.box = "bento/ubuntu-24.04"
-    config.vm.box_architecture = "arm64"
-    config.vm.box_version = "202404.26.0"
-  end
-
-  config.vm.define "rhel" do |config|
-    config.vm.box = "generic/rhel9"
-    config.vm.box_architecture = "amd64"
-    config.vm.box_version = "4.3.12"
-  end
-
-  config.vm.define "rhel-arm" do |config|
-    config.vm.box = "generic-a64/rhel9"
-    config.vm.box_architecture = "arm64"
-    config.vm.box_version = "4.3.12"
-  end
-
-  config.vm.define "rocky" do |config|
-    config.vm.box = "rockylinux/9"
-    config.vm.box_architecture = "amd64"
-    config.vm.box_version = "4.3.12"
-  end
-
-  config.vm.define "rocky-arm" do |config|
-    config.vm.box = "rockylinux/9"
-    config.vm.box_architecture = "arm64"
-    config.vm.box_version = "4.3.12"
-  end
-
-  config.vm.define "arch" do |config|
-    config.vm.box = "archlinux/archlinux"
-    config.vm.box_architecture = "amd64"
-    config.vm.box_version = "20240601.239419"
-  end
-
-  config.vm.provider "virtualbox" do |v|
-      v.memory = 4096
-      v.cpus = 10
-  end
-
   # Mount the local directory
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
@@ -60,36 +14,6 @@ Vagrant.configure("2") do |config|
     ./scripts/prepare.sh
 
     # Run the kernel compilation script
-    ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) \
-      -c INFINIBAND=m \
-      -c INFINIBAND_USER_MAD=m \
-      -c INFINIBAND_USER_ACCESS=m \
-      -c INFINIBAND_ADDR_TRANS=m \
-      -c INFINIBAND_ADDR_TRANS_CONFIGFS=m \
-      -c INFINIBAND_IPOIB=m \
-      -c INFINIBAND_IPOIB_CM=m \
-      -c INFINIBAND_IPOIB_DEBUG=m \
-      -c INFINIBAND_SRP=m \
-      -c INFINIBAND_ISER=m \
-      -c RDMA_RXE=m \
-      -c RDMA_CM=m \
-      -c NFSD=m \
-      -c NFS_FS=m \
-      -c CONFIG_NUMA=y \
-      -c CONFIG_TRANSPARENT_HUGEPAGE=y \
-      -c CONFIG_CGROUP_HUGETLB=y \
-      -c CONFIG_CGROUP_PIDS=y \
-      -c CONFIG_CGROUP_RDMA=y \
-      -c MLX5_CORE=m \
-      -c MLX5_CORE_EN=m \
-      -c MLX5_FPGA=m \
-      -c MLX5_IPSEC=m \
-      -c MLX5_TLS=m \
-      -c MLX5_VDPA=m \
-      -c TUN=m \
-      -c CONFIG_VFIO=y \
-      -c CONFIG_VFIO_PCI=y \
-      -c CONFIG_VFIO_NOIOMMU=y \
-      -c CONFIG_VFIO_MDEV=y
+    ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1)
   SHELL
 end
