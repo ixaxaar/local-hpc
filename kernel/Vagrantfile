@@ -5,15 +5,94 @@ Vagrant.configure("2") do |config|
   # Mount the local directory
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-  # Provision the VM
-  config.vm.provision "shell", inline: <<-SHELL
-    # Change directory to the mounted location
-    cd /vagrant
+  config.vm.define "ubuntu" do |ubuntu|
+    ubuntu.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
 
-    # Install everything required for this build
-    ./scripts/prepare.sh
+      # Install everything required for this build
+      ./scripts/prepare.sh
 
-    # Run the kernel compilation script
-    ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1)
-  SHELL
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d ubuntu
+    SHELL
+  end
+
+  config.vm.define "ubuntu-arm64" do |ubuntu|
+    ubuntu.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d ubuntu
+    SHELL
+  end
+
+  config.vm.define "rhel" do |rhel|
+    rhel.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d rhel
+    SHELL
+  end
+
+  config.vm.define "rhel-arm64" do |rhel|
+    rhel.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d rhel
+    SHELL
+  end
+
+  config.vm.define "rocky" do |rhel|
+    rhel.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d rocky
+    SHELL
+  end
+
+  config.vm.define "rocky-arm64" do |rhel|
+    rhel.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -d rocky
+    SHELL
+  end
+
+  config.vm.define "arch" do |ubuntu|
+    ubuntu.vm.provision "shell", inline: <<-SHELL
+      # Change directory to the mounted location
+      cd /vagrant
+
+      # Install everything required for this build
+      ./scripts/prepare.sh
+
+      # Run the kernel compilation script
+      ./scripts/compile.sh -v $(uname -r | cut -d'-' -f1) -m
+    SHELL
+  end
 end

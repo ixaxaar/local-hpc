@@ -37,6 +37,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_version = "4.3.12"
   end
 
+  # We do custom shit here 😈
   config.vm.define "arch" do |config|
     config.vm.box = "archlinux/archlinux"
     config.vm.box_architecture = "amd64"
