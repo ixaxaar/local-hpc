@@ -1,5 +1,5 @@
-base_vagrantfile = '../../..Vagrantfile'
-load base_vagrantfile if File.exists?(base_vagrantfile)
+base_vagrantfile = '../Vagrantfile'
+load base_vagrantfile
 
 Vagrant.configure("2") do |config|
   # Define the base box for each operating system
