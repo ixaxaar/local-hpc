@@ -38,17 +38,19 @@
 
 # Function to display usage instructions
 usage() {
-  echo "Usage: $0 [-v <kernel_version>] [-c <config_option>] [-b <build_dir>]"
+  echo "Usage: $0 [-v <kernel_version>] [-c <config_option>] [-b <build_dir>] [-m]"
   echo "  -v <kernel_version>   Specify the Linux kernel version to fetch and compile"
   echo "  -c <config_option>    Specify a custom kernel config option (can be used multiple times)"
+  echo "  -m                    Invoke make *-config based on the environment after make olddefconfig"
   exit 1
 }
 
 # Parse command-line arguments
-while getopts ":v:c:" opt; do
+while getopts ":v:c:m" opt; do
   case $opt in
     v) kernel_version="$OPTARG";;
     c) config_options+=("$OPTARG");;
+    m) invoke_make_config=false;;
     \?) echo "Invalid option: -$OPTARG" >&2; usage;;
     :) echo "Option -$OPTARG requires an argument." >&2; usage;;
   esac
@@ -76,6 +78,24 @@ done
 
 # Set defaults for new config options
 make olddefconfig
+
+# Invoke make *-config based on the environment if the -m option is provided
+# Warning: this part is interactive
+if [ "$invoke_make_config" = true ]; then
+  if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+      # X11 environment detected
+      make xconfig
+  elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+      # Wayland environment detected
+      make gconfig
+  elif [ -n "$DISPLAY" ]; then
+      # X11 environment detected (fallback)
+      make xconfig
+  else
+      # Non-graphical environment
+      make menuconfig
+  fi
+fi
 
 # Compile the Linux kernel
 # shellcheck disable=SC2046
