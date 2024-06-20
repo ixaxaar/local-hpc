@@ -6,7 +6,7 @@
 
 # Determine package manager
 install_packages() {
-    if command -v apt-get &> /dev/null; then
+    if command -v apt-get &>/dev/null; then
         sudo apt-get update
         sudo apt-get install -y \
             asciidoc automake bc binutils bison \
@@ -15,7 +15,7 @@ install_packages() {
             make patch python3-dev \
             wget xmlto zlib1g-dev \
             uuid-dev libblkid-dev libselinux1-dev
-    elif command -v yum &> /dev/null; then
+    elif command -v yum &>/dev/null; then
         sudo yum groupinstall -y "Development Tools"
         sudo yum install -y \
             asciidoc automake bc binutils-devel bison \
@@ -26,7 +26,7 @@ install_packages() {
             patchutils pciutils-devel pesign python3-devel \
             rpm-build systemd-devel tcl tcl-devel tk tk-devel \
             wget xmlto zlib-devel
-    elif command -v zypper &> /dev/null; then
+    elif command -v zypper &>/dev/null; then
         sudo zypper install -y \
             asciidoc automake bc binutils-devel bison \
             elfutils-libelf-devel flex gcc gcc-c++ \
@@ -35,7 +35,7 @@ install_packages() {
             lsscsi make ncurses-devel patchutils pciutils-devel \
             pesign python3-devel rpm-build systemd-devel tcl tk \
             wget xmlto zlib-devel
-    elif command -v pacman &> /dev/null; then
+    elif command -v pacman &>/dev/null; then
         sudo pacman -Syy --noconfirm
         sudo pacman -S --noconfirm \
             asciidoc automake bc binutils bison \

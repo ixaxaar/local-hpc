@@ -49,12 +49,18 @@ usage() {
 # Parse command-line arguments
 while getopts ":d:v:c:m" opt; do
   case $opt in
-    d) distribution="$OPTARG";;
-    v) kernel_version="$OPTARG";;
-    c) config_options+=("$OPTARG");;
-    m) invoke_make_config=false;;
-    \?) echo "Invalid option: -$OPTARG" >&2; usage;;
-    :) echo "Option -$OPTARG requires an argument." >&2; usage;;
+  d) distribution="$OPTARG" ;;
+  v) kernel_version="$OPTARG" ;;
+  c) config_options+=("$OPTARG") ;;
+  m) invoke_make_config=false ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    usage
+    ;;
+  :)
+    echo "Option -$OPTARG requires an argument." >&2
+    usage
+    ;;
   esac
 done
 
@@ -67,30 +73,30 @@ fi
 # Download the kernel source based on the distribution or kernel version
 if [ -n "$distribution" ]; then
   case $distribution in
-    rhel)
-      # Download RHEL kernel source package
-      yum install -y kernel-devel
-      kernel_dir="/usr/src/kernels/$(uname -r)"
-      ;;
-    ubuntu)
-      # Download Ubuntu kernel source package
-      apt-get install -y linux-source
-      kernel_dir="/usr/src/linux-source-$(uname -r | cut -d'-' -f1)"
-      ;;
-    rocky)
-      # Download Rocky Linux kernel source package
-      dnf install -y kernel-devel
-      kernel_dir="/usr/src/kernels/$(uname -r)"
-      ;;
-    arch)
-      # Download Arch Linux kernel source package
-      pacman -S --noconfirm linux-headers
-      kernel_dir="/usr/lib/modules/$(uname -r)/build"
-      ;;
-    *)
-      echo "Unsupported distribution: $distribution"
-      exit 1
-      ;;
+  rhel)
+    # Download RHEL kernel source package
+    yum install -y kernel-devel
+    kernel_dir="/usr/src/kernels/$(uname -r)"
+    ;;
+  ubuntu)
+    # Download Ubuntu kernel source package
+    apt-get install -y linux-source
+    kernel_dir="/usr/src/linux-source-$(uname -r | cut -d'-' -f1)"
+    ;;
+  rocky)
+    # Download Rocky Linux kernel source package
+    dnf install -y kernel-devel
+    kernel_dir="/usr/src/kernels/$(uname -r)"
+    ;;
+  arch)
+    # Download Arch Linux kernel source package
+    pacman -S --noconfirm linux-headers
+    kernel_dir="/usr/lib/modules/$(uname -r)/build"
+    ;;
+  *)
+    echo "Unsupported distribution: $distribution"
+    exit 1
+    ;;
   esac
 else
   # Download the specified Linux kernel version
@@ -101,7 +107,7 @@ fi
 
 # Copy the current running kernel's .config file
 cd "${kernel_dir}" || exit
-cat /proc/config.gz | gunzip > .config
+cat /proc/config.gz | gunzip >.config
 
 # Update the .config file with the custom config options
 for option in "${config_options[@]}"; do
@@ -115,17 +121,17 @@ make olddefconfig
 # Warning: this part is interactive
 if [ "$invoke_make_config" = true ]; then
   if [ "$XDG_SESSION_TYPE" = "x11" ]; then
-      # X11 environment detected
-      make xconfig
+    # X11 environment detected
+    make xconfig
   elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-      # Wayland environment detected
-      make gconfig
+    # Wayland environment detected
+    make gconfig
   elif [ -n "$DISPLAY" ]; then
-      # X11 environment detected (fallback)
-      make xconfig
+    # X11 environment detected (fallback)
+    make xconfig
   else
-      # Non-graphical environment
-      make menuconfig
+    # Non-graphical environment
+    make menuconfig
   fi
 fi
 

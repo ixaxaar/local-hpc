@@ -28,13 +28,13 @@ Vagrant.configure("2") do |config|
   config.vm.define "rocky" do |config|
     config.vm.box = "rockylinux/9"
     config.vm.box_architecture = "amd64"
-    config.vm.box_version = "4.3.12"
+    config.vm.box_version = "4.0.0"
   end
 
   config.vm.define "rocky-arm" do |config|
     config.vm.box = "rockylinux/9"
     config.vm.box_architecture = "arm64"
-    config.vm.box_version = "4.3.12"
+    config.vm.box_version = "4.0.0"
   end
 
   # We do custom shit here 😈
@@ -49,4 +49,6 @@ Vagrant.configure("2") do |config|
       v.memory = 4096
       v.cpus = 4
   end
+
+  config.vm.disk :disk, size: "20GB", primary: true
 end

@@ -6,47 +6,61 @@ Vagrant.configure("2") do |config|
   config.vm.define "ubuntu" do |ubuntu|
     ubuntu.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d ubuntu -v 24.04
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d ubuntu -v 24.04
     SHELL
   end
 
   config.vm.define "ubuntu-arm64" do |ubuntu|
     ubuntu.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d ubuntu -v 24.04
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d ubuntu -v 24.04
     SHELL
   end
 
   config.vm.define "rhel" do |rhel|
     rhel.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d rhel -v 9.3
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d rhel -v 9.3
     SHELL
   end
 
   config.vm.define "rhel-arm64" do |rhel|
     rhel.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d rhel -v 9.3
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d rhel -v 9.3
     SHELL
   end
 
   config.vm.define "rocky" do |rhel|
     rhel.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d rhel -v 9.3
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d rhel -v 9.3
     SHELL
   end
 
   config.vm.define "rocky-arm64" do |rhel|
     rhel.vm.provision "shell", inline: <<-SHELL
       cd /vagrant
-      ./install_ofed.sh -d rhel -v 9.3
+    #   ./scripts/prepare.sh
+      ./scripts/mofed.sh -d rhel -v 9.3
+    SHELL
+  end
+
+  config.vm.define "rocky-arm64" do |rhel|
+    rhel.vm.provision "shell", inline: <<-SHELL
+      cd /vagrant
+      ./scripts/prepare.sh
+      ./scripts/mofed.sh -d arch -v 9.3
     SHELL
   end
 
   # Mount the local directory
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-  config.vm.synced_folder "../../kernel/", "/kernel", type: "virtualbox"
+  config.vm.synced_folder "../kernel/", "/kernel", type: "virtualbox"
 
 end
